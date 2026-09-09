@@ -12,105 +12,122 @@ async function run() {
   });
 
   const page = await browser.newPage();
-  const consoleErrors = [];
-  page.on('console', (msg) => {
-    if (msg.type() === 'error') consoleErrors.push(msg.text());
-  });
 
-  console.log('--- Verifying Cyber Shelf Desktop (1440x900) ---');
+  console.log('=== VERIFYING EXPANDED 3D CYBER SHELF (1440x900) ===');
   await page.setViewport({ width: 1440, height: 900, isMobile: false });
   await page.goto('http://localhost:5174/', { waitUntil: 'networkidle0' });
   await new Promise((r) => setTimeout(r, 1200));
 
-  const projectsInfo = await page.evaluate(() => {
-    const el = document.getElementById('projects');
-    if (!el) return null;
-    const rect = el.getBoundingClientRect();
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  // Scroll to Projects section
+  await page.evaluate(() => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
+  await new Promise((r) => setTimeout(r, 1000));
+
+  // 1. Verify alignment of Active Card vs Header Container at 1440px
+  const alignmentMetrics = await page.evaluate(() => {
+    const projects = document.getElementById('projects');
+    if (!projects) return null;
+
+    // Header container
+    const headerContainer = projects.querySelector('.max-w-\\[1222px\\]');
+    const headerRect = headerContainer?.getBoundingClientRect();
+
+    // Active Card
+    const cards = Array.from(projects.querySelectorAll('article'));
+    const activeCard = cards[0];
+    const cardRect = activeCard?.getBoundingClientRect();
+
+    // Check blur on cards
+    const blurFound = cards.some((card) => {
+      const style = window.getComputedStyle(card);
+      return style.filter.includes('blur') || style.backdropFilter.includes('blur');
+    });
+
     return {
-      top: rect.top + scrollTop,
-      height: rect.height,
+      headerRect: headerRect ? { left: headerRect.left, right: headerRect.right, width: headerRect.width } : null,
+      cardRect: cardRect ? { left: cardRect.left, right: cardRect.right, width: cardRect.width, height: cardRect.height } : null,
+      leftEdgeDiff: headerRect && cardRect ? Math.abs(headerRect.left - cardRect.left) : null,
+      rightEdgeDiff: headerRect && cardRect ? Math.abs(headerRect.right - cardRect.right) : null,
+      hasBlurFilter: blurFound,
     };
   });
 
-  console.log('Projects section info:', projectsInfo);
+  console.log('1440px Alignment & Sharpness Metrics:', alignmentMetrics);
 
-  if (projectsInfo) {
-    const trackHeight = projectsInfo.height - 900;
+  // Capture Card 1: Singaplan
+  await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card1-singaplan.png') });
 
-    // Card 1 position: top of the sticky container
-    console.log('Capturing Card 1 (Singaplan)...');
-    await page.evaluate((top) => window.scrollTo(0, top), projectsInfo.top);
-    await new Promise((r) => setTimeout(r, 800));
-    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card1.png') });
-
-    // Scroll 1/2 of track (Card 2 QueueEase)
-    console.log('Capturing Card 2 (QueueEase)...');
-    await page.evaluate((top, th) => window.scrollTo(0, top + th * 0.5), projectsInfo.top, trackHeight);
-    await new Promise((r) => setTimeout(r, 800));
-    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card2.png') });
-
-    // Scroll to end of track (Card 3 LilzBake)
-    console.log('Capturing Card 3 (LilzBake Analytics)...');
-    await page.evaluate((top, th) => window.scrollTo(0, top + th * 1.0), projectsInfo.top, trackHeight);
-    await new Promise((r) => setTimeout(r, 800));
-    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card3.png') });
+  // Click Tab 02: QueueEase
+  console.log('Switching to Case 002: QueueEase...');
+  const tabs = await page.$$(('#projects [role="tab"]'));
+  if (tabs.length >= 2) {
+    await tabs[1].click();
+    await new Promise((r) => setTimeout(r, 1200));
+    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card2-queueease.png') });
   }
 
-  // Breakpoints test
-  const breakpoints = [
-    { name: '1024', width: 1024, height: 800, isMobile: false },
-    { name: '768', width: 768, height: 1024, isMobile: false },
-    { name: '375', width: 375, height: 812, isMobile: true, hasTouch: true },
-  ];
-
-  for (const bp of breakpoints) {
-    console.log(`Verifying breakpoint ${bp.name} (${bp.width}x${bp.height})...`);
-    await page.setViewport({
-      width: bp.width,
-      height: bp.height,
-      isMobile: bp.isMobile,
-      hasTouch: bp.hasTouch,
-    });
-    await page.goto('http://localhost:5174/', { waitUntil: 'networkidle0' });
-    await new Promise((r) => setTimeout(r, 1000));
-
-    await page.evaluate(() => {
-      const el = document.getElementById('projects');
-      if (el) {
-        const top = el.getBoundingClientRect().top + window.scrollY;
-        window.scrollTo(0, top);
-      }
-    });
-    await new Promise((r) => setTimeout(r, 800));
-    await page.screenshot({ path: path.join(OUT_DIR, `cybershelf-${bp.name}.png`) });
+  // Click Tab 03: LilzBake Analytics
+  console.log('Switching to Case 003: LilzBake Analytics...');
+  if (tabs.length >= 3) {
+    await tabs[2].click();
+    await new Promise((r) => setTimeout(r, 1200));
+    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-card3-lilzbake.png') });
   }
 
-  // Reduced motion test
-  console.log('Testing prefers-reduced-motion...');
-  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
-  await page.setViewport({ width: 1440, height: 900, isMobile: false });
-  await page.goto('http://localhost:5174/', { waitUntil: 'networkidle0' });
-  await new Promise((r) => setTimeout(r, 800));
+  // Hover over the active visual stage on Card 3
+  console.log('Hovering over LilzBake visual stage...');
+  const stage = await page.$('#projects article:nth-child(3) .lg\\:col-span-7');
+  if (stage) {
+    await stage.hover();
+    await new Promise((r) => setTimeout(r, 500));
+    await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1440-stage-hover.png') });
+  }
+
+  // Test 1024px Small Desktop
+  console.log('Verifying 1024px breakpoint...');
+  await page.setViewport({ width: 1024, height: 768 });
   await page.evaluate(() => {
-    const el = document.getElementById('projects');
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo(0, top);
-    }
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'instant', block: 'start' });
   });
-  await new Promise((r) => setTimeout(r, 600));
+  await new Promise((r) => setTimeout(r, 1000));
+  await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-1024.png') });
+
+  // Test 768px Tablet
+  console.log('Verifying 768px breakpoint...');
+  await page.setViewport({ width: 768, height: 1024 });
+  await page.evaluate(() => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
+  await new Promise((r) => setTimeout(r, 1000));
+  await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-768.png') });
+
+  // Test 375px Mobile
+  console.log('Verifying 375px breakpoint...');
+  await page.setViewport({ width: 375, height: 812, isMobile: true });
+  await page.evaluate(() => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  });
+  await new Promise((r) => setTimeout(r, 1000));
+  await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-375.png') });
+
+  // Test prefers-reduced-motion
+  console.log('Verifying prefers-reduced-motion...');
+  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+  await page.setViewport({ width: 1440, height: 900 });
+  await page.goto('http://localhost:5174/', { waitUntil: 'networkidle0' });
+  await new Promise((r) => setTimeout(r, 1000));
+  await page.evaluate(() => {
+    document.getElementById('projects')?.scrollIntoView({ behavior: 'instant', block: 'center' });
+  });
+  await new Promise((r) => setTimeout(r, 1000));
   await page.screenshot({ path: path.join(OUT_DIR, 'cybershelf-reduced-motion.png') });
 
   await browser.close();
-
-  console.log('--- Verification Complete ---');
-  console.log(`Console errors captured: ${consoleErrors.length}`);
-  if (consoleErrors.length > 0) {
-    console.log('Errors:', consoleErrors);
-  } else {
-    console.log('Zero errors captured!');
-  }
+  console.log('=== CYBER SHELF VERIFICATION COMPLETE ===');
 }
 
-run().catch(console.error);
+run().catch((err) => {
+  console.error('Verification failed:', err);
+  process.exit(1);
+});

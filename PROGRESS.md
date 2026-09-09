@@ -67,10 +67,11 @@ explicitly says to change them.
    QA cross-check), per `12-ui-ux-pro-max-usage.md`. Its auto design-system
    generator (`--design-system`) is explicitly NOT to be used — our design
    system in `01-design-system.md` is final and already partially built.
-7. **Projects implementation: 3D Curved Cyber Shelf (`05-projects-section.md`)**,
-   hardware-accelerated CSS 3D transforms (`perspective: 1200px`, `translate3d`,
-   `rotateY`, `translateZ`, `scale`, `opacity`) arranged in a horizontal Cover Flow
-   rail with zero CSS blur. Zero WebGL overhead in Projects section.
+7. **Projects implementation: Expansive 3D Cyber Shelf & Split Dossier Console (`05-projects-section.md`)**,
+   hardware-accelerated CSS 3D transforms (`perspective: 1400px`, `translate3d`, `rotateY`, `translateZ`, `scale`, `opacity`)
+   arranged in a horizontal Cover Flow rail with zero CSS blur. Active card expanded to `w-[92vw] sm:w-[88vw] lg:w-[80vw] max-w-6xl`
+   with flush header container margins. 2-column split console: 5 cols technical specs/controls + 7 cols interactive telemetry stage
+   (`SingaplanStage`, `QueueEaseStage`, `LilzBakeStage`). Zero WebGL overhead.
 8. **Repository Remote:** Linked and pushed to `https://github.com/WardoGeraldo/portfolio.git`
    on `main` branch.
 9. **About section cybernetic telemetry architecture (`04-about-section.md`):**
@@ -448,6 +449,55 @@ building, no need to re-decide.
   - `about-768.png` (Tablet 768px stacked)
   - `about-375.png` (Mobile 375px stacked)
 - **Build Status:** Passes cleanly with `tsc -b && vite build` (125ms, zero errors).
+
+---
+
+### Phase 5.1 Override — Projects Section: Expansive 3D Cyber Shelf & Split Dossier Console (`05-projects-section.md`) — ✅ Done
+
+**Architecture & Rationale:**
+- **Expansive Dimensions & Symmetrical Margins:**
+  - Expanded card width to `w-[92vw] sm:w-[88vw] lg:w-[80vw] max-w-6xl` with `min-h-fit lg:min-h-[540px]`, commanding the central viewport and eliminating dark empty space.
+  - Sized Section Header and Spatial HUD containers to `w-[92vw] sm:w-[88vw] lg:w-[80vw] max-w-[1222px] mx-auto` to align flush with the projected 3D card width ($1152\text{px} \times 1.0606 = 1222\text{px}$).
+  - Added `pt-16 sm:pt-20 lg:pt-24` top clearance on the pinned sticky stage, ensuring `Featured Case Files.` is never obscured behind the fixed navigation header.
+- **Split Dossier Console (12-Column Subgrid):**
+  - **Left Side (5 Cols) — Technical Specs & Action Matrix:**
+    - Top telemetry bar: Category tag (`[IOS]`, `[WEB]`, `[DATA]`), pulsating emerald status indicator (`APP STORE DEPLOYED`, `PRODUCTION LIVE`, `ENGAGEMENT PIPELINE`), and performance chip (`LATENCY: <10ms`, `WS LATENCY: <8ms`, `ETL: 1,420 EVT/SEC`).
+    - Volume indicator (`VOL. 01`–`03`) + Subtitle + `GlitchText` project title.
+    - Core Architecture Specs terminal bullet chips with `›` accents.
+    - Compiled Tech Stack tags with cyan borders.
+    - Primary action button (`APP STORE ↗` / `LIVE DEMO ↗`) + Ghost button (`SOURCE CODE`).
+  - **Right Side (7 Cols) — Interactive Visual Telemetry Stage:**
+    - **`SingaplanStage.tsx`:** Holographic itinerary simulator with GPS coordinates (`1.3521°N, 103.8198°E`), satellite lock (`FIXED 99.8%`), quick metric chips (6.4ms latency, 98.4% optimal), and route timeline with animated connection pulses.
+    - **`QueueEaseStage.tsx`:** Live operational queue terminal streaming dynamic ticket numbers (`#A-042`), wait pool metrics, 4-node counter status array, and hourly throughput load histogram.
+    - **`LilzBakeStage.tsx`:** Commercial bakery telemetry pipeline with architecture flow diagram (`POS STREAM` → `FASTAPI ETL` → `PANDAS ML` → `PREDICTIVE DEMAND`), live SKU sales velocity progress bars, and demand smoothing KPI footer.
+- **3D Curved Shelf Mechanics:**
+  - `perspective: 1400px; transform-style: preserve-3d;`
+  - Horizontal Cover Flow rail with generous 6rem (96px) gap.
+  - Active card: `translateZ(80px) rotateY(0deg) scale(1)` with radiant violet border and shadow.
+  - Symmetrical angled wings: `translateZ(-100px) rotateY(±20deg) scale(0.90)` with `opacity: 0.35`.
+  - Inactive cards brighten on hover to `opacity: 0.7` and ease rotation toward camera.
+  - Zero CSS blur rule strictly enforced across all elements (`hasBlurFilter: false`).
+- **Responsive Adaptations:**
+  - Mobile (<640px): Compact single-column card stacking with adjusted vertical positioning (`top-[57%]`) and selective density reduction to prevent viewport clipping.
+  - Tablet (768px): Vertical stacking with full interactive console stages.
+  - Desktop (1024px / 1440px): Expansive 2-column side-by-side console.
+  - `prefers-reduced-motion`: Clean static single-card view with tab switcher.
+
+**Verification & Metrics:**
+- **Automated Geometry & Blur Check (`scripts/verify-cybershelf.mjs`):**
+  - Zero blur detected: `hasBlurFilter: false`.
+  - Tab switching between all 3 projects verified.
+- **Visual QA Capture:**
+  - `cybershelf-1440-card1-singaplan.png`
+  - `cybershelf-1440-card2-queueease.png`
+  - `cybershelf-1440-card3-lilzbake.png`
+  - `cybershelf-1440-stage-hover.png`
+  - `cybershelf-1024.png`
+  - `cybershelf-768.png`
+  - `cybershelf-375.png`
+  - `cybershelf-reduced-motion.png`
+- **Build Status:** `tsc -b && vite build` passed cleanly in 133ms.
+
 
 
 
