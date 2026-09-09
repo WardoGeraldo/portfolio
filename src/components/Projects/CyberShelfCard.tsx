@@ -1,9 +1,7 @@
 import { useState, forwardRef, type CSSProperties } from 'react';
 import { GlitchText } from '../shared/GlitchText';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
-import { SingaplanStage } from './stages/SingaplanStage';
-import { QueueEaseStage } from './stages/QueueEaseStage';
-import { LilzBakeStage } from './stages/LilzBakeStage';
+import { ProjectImageChassis } from './ProjectImageChassis';
 
 export interface CyberProject {
   id: string;
@@ -22,6 +20,8 @@ export interface CyberProject {
   glyph: string;
   status: string;
   telemetryChip: string;
+  imageSrc: string;
+  resolutionTag?: string;
 }
 
 interface CyberShelfCardProps {
@@ -39,7 +39,6 @@ export const CyberShelfCard = forwardRef<HTMLElement, CyberShelfCardProps>(
   ) {
     const prefersReducedMotion = useReducedMotion();
     const [isHovered, setIsHovered] = useState(false);
-    const [isStageHovered, setIsStageHovered] = useState(false);
 
     // Category accent colors (CMYK channel split)
     const categoryColor =
@@ -255,21 +254,16 @@ export const CyberShelfCard = forwardRef<HTMLElement, CyberShelfCardProps>(
             </div>
           </div>
 
-          {/* Right Side (7 Cols) — Interactive Visual Telemetry Stage */}
-          <div
-            className="lg:col-span-7 flex flex-col justify-stretch min-h-[340px] sm:min-h-[380px]"
-            onMouseEnter={() => setIsStageHovered(true)}
-            onMouseLeave={() => setIsStageHovered(false)}
-          >
-            {project.id === 'singaplan' && (
-              <SingaplanStage isGlitching={isStageHovered && !prefersReducedMotion} />
-            )}
-            {project.id === 'queue-ease' && (
-              <QueueEaseStage isGlitching={isStageHovered && !prefersReducedMotion} />
-            )}
-            {project.id === 'lilzbake-analytics' && (
-              <LilzBakeStage isGlitching={isStageHovered && !prefersReducedMotion} />
-            )}
+          {/* Right Side (7 Cols) — Clean Screenshot in Futuristic Frame Chassis */}
+          <div className="lg:col-span-7 flex flex-col justify-stretch h-full min-h-[280px] sm:min-h-[340px] lg:min-h-[380px]">
+            <ProjectImageChassis
+              src={project.imageSrc}
+              alt={project.title}
+              projectIndex={index}
+              projectCategory={project.category}
+              resolutionTag={project.resolutionTag}
+              categoryColor={categoryColor}
+            />
           </div>
         </div>
       </article>

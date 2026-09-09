@@ -25,6 +25,8 @@ const PROJECTS: CyberProject[] = [
     glyph: '⌘',
     status: 'APP STORE DEPLOYED',
     telemetryChip: 'LATENCY: <10ms',
+    imageSrc: '/assets/projects/singaplan-preview.png',
+    resolutionTag: '1170x2532_RETINA',
   },
   {
     id: 'queue-ease',
@@ -48,6 +50,8 @@ const PROJECTS: CyberProject[] = [
     glyph: '⬡',
     status: 'PRODUCTION LIVE',
     telemetryChip: 'WS LATENCY: <8ms',
+    imageSrc: '/assets/projects/queueease-preview.png',
+    resolutionTag: '1920x1080_RAW',
   },
   {
     id: 'lilzbake-analytics',
@@ -71,6 +75,8 @@ const PROJECTS: CyberProject[] = [
     glyph: '◈',
     status: 'ENGAGEMENT PIPELINE',
     telemetryChip: 'ETL: 1,420 EVT/SEC',
+    imageSrc: '/assets/projects/lilzbake-preview.png',
+    resolutionTag: '1920x1080_RAW',
   },
 ];
 

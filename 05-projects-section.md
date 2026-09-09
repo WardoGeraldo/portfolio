@@ -2,49 +2,46 @@
 
 ## Goal
 
-An expansive, interactive, scroll-driven 3D Cyber Shelf / Cover Flow. The active card expands to command the center viewport—aligned flush with the section header container margins—while preserving the 3D curved horizontal shelf mechanics. The interior of each card is split into a high-density technical console and a custom interactive visual stage.
+Interactive 3D Cyber Shelf with expansive cards aligned to the header margins. The left side provides technical architecture details; the right side showcases a high-fidelity, completely unprocessed screenshot of the actual project framed inside a futuristic chassis.
 
-**NON-NEGOTIABLE PERFORMANCE & CLARITY RULES:**
-- **Zero CSS Blur:** Never apply `filter: blur()` or backdrop blurs to any card or text. Every element must remain razor-sharp and readable at all times.
-- **Hardware-Accelerated 3D Transforms Only:** Rely strictly on pure CSS 3D (`perspective: 1400px`, `transform: translate3d(...) rotateY(...)`). Do NOT use Three.js, canvas, or WebGL.
-- **Continuous Sharp Rendering:** Use CSS opacity (`opacity: 0.35` to `1.0`) and scale (`0.90` to `1.0`) for depth hierarchy, never blur filters.
+**NON-NEGOTIABLE CLARITY & FIDELITY RULES:**
+- **Zero Effects on Project Imagery:** The actual screenshot/image must NEVER have CSS filters, duotone grading, blurs, saturation changes, or glitch overlays. It must remain 100% natural, crisp, and true to the original app/web UI.
+- **Zero Text Blurs:** Retain zero `filter: blur()` across all cards and typography.
+- **Hardware-Accelerated 3D Transforms Only:** Pure CSS 3D (`perspective: 1400px`, `transform: translate3d(...) rotateY(...)`).
 
-## Stage Sizing & Container Alignment
+## Stage & Shelf Geometry
 
-- **Container Alignment:** The active card must align with the left and right layout margins of the `[02] // Projects` and `Featured Case Files.` headers above it.
-- **Dimensions:** Active card width set to `min-w-[80vw]` (capped at `max-w-6xl`) and `min-h-[520px]` to fill the vertical breathing room symmetrically.
+- **Alignment:** The active card remains centered and aligned flush with the left and right layout margins of the `[02] // Projects` and `Featured Case Files.` headers.
+- **Dimensions:** Active card width: `min-w-[80vw]` (capped at `max-w-6xl`), minimum height: `min-h-[540px]`.
 - **Pinned Track:** Outer container `height: 300vh` with inner container `position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center;`.
+- **Rail Interpolation:**
+  - **Active Center:** `transform: translateZ(80px) rotateY(0deg) scale(1); opacity: 1; border-color: var(--violet-bright);`
+  - **Left/Right Inactive:** `transform: translateZ(-100px) rotateY(±20deg) scale(0.90); opacity: 0.35;`
 
-## 3D Shelf Mechanics (Curved Rail)
+## Card Architecture — Split Cyber Dossier
 
-- **Perspective Stage:** Wrap the track in a container with `perspective: 1400px; transform-style: preserve-3d;`.
-- **Horizontal Rail Track:**
-  - Cards arranged in a row with generous spacing (`display: flex; gap: 6rem; align-items: center;`).
-  - As scroll progress transitions ($0 \to 1$), map scroll progress directly to horizontal translation so the active card centers in the viewport.
-- **Card Angle & Depth Interpolation:**
-  - **Center (Active) Card:** `transform: translateZ(80px) rotateY(0deg) scale(1); opacity: 1; border-color: var(--violet-bright); box-shadow: 0 0 40px -10px rgba(168, 85, 247, 0.25);`
-  - **Left (Past) Cards:** `transform: translateZ(-100px) rotateY(20deg) scale(0.90); opacity: 0.35;`
-  - **Right (Upcoming) Cards:** `transform: translateZ(-100px) rotateY(-20deg) scale(0.90); opacity: 0.35;`
-- **Transitions:** Smooth interpolation via scroll-listener or CSS spring transitions. Zero blur filters.
+Every card is structured as a 12-column engineering console (`grid grid-cols-12 gap-8 p-8 items-center`):
 
-## Split Dossier Card Layout (2-Column Console)
+### Left Side (5 Cols) — Technical Specifications & Actions
+- **Header Meta Bar:** Category tag (e.g. `[IOS] // CASE // 001`), live status indicator (`APP STORE DEPLOYED`), and performance telemetry chip (`LATENCY: <10ms`).
+- **Title & Overview:** High-contrast title followed by the technical synopsis.
+- **Core Architecture Specs:** Bullet chips detailing engineering highlights (e.g., "SwiftData Local Cache & Offline State", "Heuristic Multi-Criteria Decision Solver", "Async/Await Concurrency").
+- **Compiled Tech Stack:** Monospace pill badges with subtle cyan border accents.
+- **Action Matrix:** High-visibility primary button (`APP STORE` or `LIVE DEMO`) and ghost button (`SOURCE CODE`).
 
-Each card uses `--bg-panel-raised` with a hairline border, corner `+` crosshair accents, and a 12-column sub-grid (`grid grid-cols-12 gap-8 p-8`):
+### Right Side (7 Cols) — Clean Screenshot in Futuristic Frame Chassis
+Replace the simulated telemetry code block with a dedicated image display chassis:
+- **Project Image Assets:**
+  - **Case 01 (Singaplan):** `/public/assets/projects/singaplan-preview.png` (iOS app preview)
+  - **Case 02 (QueueEase):** `/public/assets/projects/queueease-preview.png` (Web platform preview)
+  - **Case 03 (LilzBake):** `/public/assets/projects/lilzbake-preview.png` (Data dashboard preview)
+  *(If the file is not yet uploaded, use a styled placeholder frame with an image icon).*
+- **Clean Image Rule:** Rendered using standard `<img />` or `next/image` with `object-fit: cover` or `object-fit: contain`. **Strictly NO filters, tints, duotones, scanlines, or glitches over the image.**
+- **Futuristic Chassis (Behind & Around the Image):**
+  - Surrounding cyber border: `--border-hairline` with corner crosshairs or target brackets (`┌ ┐ └ ┘`).
+  - Top chassis bar: Monospace metadata label (`DISPLAY_PORT // 01`, resolution tag `1920x1080_RAW`, signal indicator).
+  - Subtle drop shadow / ambient neon backlight (`box-shadow: 0 0 30px -10px rgba(168, 85, 247, 0.2)`).
 
-### Left Side (5 Cols) — Technical Specification & Controls
-- **Header Meta Bar:** Category badge (`[IOS] // CASE // 001`), deployment status indicator with green pulsating dot (`APP STORE DEPLOYED`), and performance telemetry chip (`LATENCY: <10ms`).
-- **Title & Overview:** High-contrast header with concise technical synopsis (problem statement and architecture solution).
-- **Core Architecture Specs:** Key feats listed as terminal bullet chips (e.g., "SwiftData Local Cache", "Heuristic Decision Matrix", "Async Await Concurrency").
-- **Compiled Tech Stack:** Monospace pill tags with subtle cyan accent borders.
-- **Action Matrix:** High-visibility primary button (`LIVE DEMO / APP STORE` with directional arrow) and ghost button (`SOURCE CODE`).
-
-### Right Side (7 Cols) — Interactive Visual Telemetry Stage
-A rich visual stage customized per project:
-- **Case 01 — Singaplan:** Holographic mobile itinerary simulator. Displays a dynamic UI card mockup showing live GPS coordinates (`1.35°N 103.82°E`), a styled travel route timeline with animated connection pulses, and decision filter metrics.
-- **Case 02 — QueueEase:** Live operational queue terminal. Visualizes active ticket numbers streaming, counter status indicators (`COUNTER 01: ACTIVE`), and an animated throughput load graph.
-- **Case 03 — LilzBake Analytics:** Live data-pipeline visualizer. Displays SVG telemetry bar charts, sales velocity sparklines, and ingestion node graphs with monospace KPI chips (`+38.4% VELOCITY`).
-
-## Micro-Interactions & Styling
-- Hovering the visual stage triggers a momentary CMYK RGB channel-split twitch.
-- Status indicator dots pulse continuously using CSS keyframes.
-- Inactive cards brighten on hover to `opacity: 0.7` and slightly ease their rotation angle toward the camera.
+## Micro-Interactions
+- Hovering the chassis creates a subtle elevation lift (`translateY(-2px)`) and slightly brightens the surrounding hairline frame.
+- The image itself stays clean and undisturbed on hover.

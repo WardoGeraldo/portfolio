@@ -498,6 +498,36 @@ building, no need to re-decide.
   - `cybershelf-reduced-motion.png`
 - **Build Status:** `tsc -b && vite build` passed cleanly in 133ms.
 
+---
 
+### Phase 5.2 — Project Image Viewport & Futuristic Frame Chassis (`05-projects-section.md`) — ✅ Done
 
+**Architecture & Implementation:**
+- **Clean Screenshot Viewport (`src/components/Projects/ProjectImageChassis.tsx`):**
+  - Replaced right-side simulated telemetry code blocks with high-fidelity, true-to-life project screenshot viewports.
+  - **Strict Zero-Effects Rule:** Over the actual `<img>` screenshot, CSS filters, duotone gradients, blurs, scanlines, and glitch overlays are strictly prohibited (`filter: none`, `mixBlendMode: normal`), preserving 100% natural, crisp, retina color fidelity.
+  - High-resolution preview image assets generated and placed in `/public/assets/projects/`:
+    - `singaplan-preview.png` (iOS Travel Itinerary Planner UI — `1170x2532_RETINA`)
+    - `queueease-preview.png` (Digital Queue Management Platform — `1920x1080_RAW`)
+    - `lilzbake-preview.png` (Commercial Bakery Telemetry Dashboard — `1920x1080_RAW`)
+  - Graceful fallback with styled camera placeholder frame if an image fails to load or is awaiting asset upload.
+- **Futuristic Chassis Design (Frame & Surrounds):**
+  - 4 precision corner targeting brackets (`┌ ┐ └ ┘`) tinted in project category accent (`#00F0FF`, `#FF2E9A`, `#FFE600`).
+  - Top metadata header: Pulsing signal node, `DISPLAY_PORT // 0{n}`, `[{CATEGORY}_UI]` label, resolution badge, and `SIGNAL: 100%` status chip.
+  - Bottom telemetry footer: `SECURE_VIEWPORT // UNPROCESSED_RAW` with `COLOR_SPACE: DCI-P3 · 100% TRUE COLOR` notice.
+  - Ambient backlight neon glow (`box-shadow: 0 0 30px -10px ${categoryColor}25`).
+  - Micro-interaction: Subtle hover lift (`hover:-translate-y-0.5`) with frame illumination, while the image itself remains 100% untouched.
+- **Hardware-Accelerated 3D Shelf Consistency:**
+  - Maintained Cover Flow geometry (`perspective: 1400px`, `rotateY`, `translateZ(80px)` active, `scale(0.90)` inactive wings).
+  - Left-side technical dossier (volume tag, glitch title, architecture chips, compiled stack tags, action buttons) completely intact and aligned.
 
+**Verification & Metrics:**
+- **Build Status:** `tsc -b && vite build` succeeded in 134ms with 0 errors.
+- **Automated Geometry & Blur Check (`scripts/verify-cybershelf.mjs`):**
+  - `hasBlurFilter: false` confirmed across all cards, text, and chassis elements.
+- **Visual Verification Captured:**
+  - `cybershelf-1440-card1-singaplan.png`: Crisp native iOS itinerary UI inside cyan chassis.
+  - `cybershelf-1440-card2-queueease.png`: Crisp web operational console inside neon pink chassis.
+  - `cybershelf-1440-card3-lilzbake.png`: Crisp predictive bakery analytics dashboard inside yellow chassis.
+  - `cybershelf-1024.png`, `cybershelf-768.png`, `cybershelf-375.png`, `cybershelf-reduced-motion.png`: All responsive breakpoints and accessibility modes verified.
+- **Git Status:** Pending user confirmation before commit/push per explicit instructions.
