@@ -67,11 +67,12 @@ explicitly says to change them.
    QA cross-check), per `12-ui-ux-pro-max-usage.md`. Its auto design-system
    generator (`--design-system`) is explicitly NOT to be used — our design
    system in `01-design-system.md` is final and already partially built.
-7. **Projects implementation: 2.5D CSS Cyber Shelf (`05-projects-section.md`)**,
-   not WebGL / Three.js or ThreeUI component. Pure hardware-accelerated CSS 3D
-   transforms (`perspective: 1200px`, `translate3d`, `rotateX`, `scale`, `blur`,
-   `opacity`) driven by scroll progress. Zero WebGL overhead in Projects section.
-   Includes accessible tabbed fallback for `prefers-reduced-motion`.
+7. **Projects implementation: 3D Curved Cyber Shelf (`05-projects-section.md`)**,
+   hardware-accelerated CSS 3D transforms (`perspective: 1200px`, `translate3d`,
+   `rotateY`, `translateZ`, `scale`, `opacity`) arranged in a horizontal Cover Flow
+   rail with zero CSS blur. Zero WebGL overhead in Projects section.
+8. **Repository Remote:** Linked and pushed to `https://github.com/WardoGeraldo/portfolio.git`
+   on `main` branch.
 
 ---
 
@@ -87,7 +88,6 @@ answer here) so future sessions don't hit the same question twice.
 - [ ] About section bio copy, stats, and photo — still placeholder
 - [x] Real project list — mapped to Singaplan (iOS), QueueEase (Web), and
       LilzBake Analytics (Data) per `05-projects-section.md`
-- [ ] Contact links (email, LinkedIn, GitHub, resume PDF)
 - [ ] Contact links (email, LinkedIn, GitHub, resume PDF)
 - [ ] **Visual QA debt:** Phases 1–2 (Foundation, Hero) and any of Phase 3 done
       so far were built before `13-visual-qa-protocol.md` existed. Run the
