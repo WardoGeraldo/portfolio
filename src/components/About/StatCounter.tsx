@@ -9,9 +9,9 @@ interface StatItem {
 }
 
 const STATS: StatItem[] = [
-  { value: 3, suffix: '+', label: 'Years Experience', meta: 'iOS & Web Engineering' },
-  { value: 14, suffix: '+', label: 'Shipped Products', meta: 'Native & Modern Web' },
-  { value: 50, suffix: '+', label: 'Datasets Analyzed', meta: 'Empirical Insights' },
+  { value: 3, suffix: '+', label: 'Apps Shipped', meta: 'Native & Web Platforms' },
+  { value: 14, suffix: '+', label: 'Datasets Analyzed', meta: 'Telemetry & Analytics' },
+  { value: 50, suffix: 'k+', label: 'Data Points Processed', meta: 'Live Pipeline Throughput' },
 ];
 
 export function StatCounter() {
@@ -66,11 +66,11 @@ export function StatCounter() {
   return (
     <div
       ref={containerRef}
-      className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-border-hairline"
+      className="grid grid-cols-3 gap-3 sm:gap-6 pt-5 border-t border-border-hairline"
     >
       {STATS.map((stat, i) => (
         <div key={stat.label} className="flex flex-col">
-          <div className="font-mono text-3xl sm:text-4xl font-bold tracking-tight text-text-primary flex items-baseline gap-0.5">
+          <div className="font-mono text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-text-primary flex items-baseline gap-0.5">
             <span
               className={`transition-colors duration-500 ${
                 hasTriggered && !prefersReducedMotion ? 'text-accent' : 'text-text-primary'
@@ -81,12 +81,12 @@ export function StatCounter() {
             >
               {counts[i]}
             </span>
-            <span className="text-accent text-2xl">{stat.suffix}</span>
+            <span className="text-accent text-xl sm:text-2xl">{stat.suffix}</span>
           </div>
-          <div className="font-mono text-xs uppercase tracking-wider text-text-secondary mt-1">
+          <div className="font-mono text-[11px] sm:text-xs uppercase tracking-wider text-text-secondary mt-1 line-clamp-1">
             {stat.label}
           </div>
-          <div className="font-mono text-[11px] text-text-tertiary mt-0.5">
+          <div className="font-mono text-[10px] sm:text-[11px] text-text-tertiary mt-0.5 line-clamp-1">
             {stat.meta}
           </div>
         </div>

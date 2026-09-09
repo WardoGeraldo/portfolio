@@ -73,6 +73,14 @@ explicitly says to change them.
    rail with zero CSS blur. Zero WebGL overhead in Projects section.
 8. **Repository Remote:** Linked and pushed to `https://github.com/WardoGeraldo/portfolio.git`
    on `main` branch.
+9. **About section cybernetic telemetry architecture (`04-about-section.md`):**
+   Left column (5 cols) features Edward's real portrait (`/public/assets/edward-portrait.jpg`)
+   with duotone violet grading, targeting HUD brackets (`SYS.SCAN // 01`, `LAT: -6.2088`,
+   `99.8% CALIBRATED`), CRT scanlines, and CMYK channel-glitch hover/timer. Right column
+   (7 cols) eliminates long text paragraphs in favor of a 3-tier deck: Tier 1 circular EGK
+   Identity Core radar + engineering thesis, Tier 2 dual discipline modules (`// 01 ARCHITECTURE`
+   and `// 02 RIGOR`) with CMYK channel accents, Tier 3 philosophy terminal chip + 3-column
+   metric counter HUD. Zero height divergence (`heightDiff: 0px`) verified on desktop.
 
 ---
 
@@ -85,7 +93,9 @@ answer here) so future sessions don't hit the same question twice.
 
 - [ ] Beat copy for the 4 hero story cards (Build/Analyze/Craft/Ship) —
       still placeholder text from `11-hero-scroll-scrub.md`
-- [ ] About section bio copy, stats, and photo — still placeholder
+- [x] About section bio copy, stats, and photo — updated with real portrait,
+      EGK Identity Core, dual discipline modules, and verified metrics per
+      `04-about-section.md`
 - [x] Real project list — mapped to Singaplan (iOS), QueueEase (Web), and
       LilzBake Analytics (Data) per `05-projects-section.md`
 - [ ] Contact links (email, LinkedIn, GitHub, resume PDF)
@@ -403,5 +413,41 @@ building, no need to re-decide.
   - 768px (Tablet): Side-by-side header nav, clean card layout, zero overflow.
   - 1024px & 1440px (Desktop / LG): 3D Curved Cyber Shelf (Cover Flow) with symmetrical angled wings, interactive Three.js hero node graph, precision custom reticle cursor.
   - `prefers-reduced-motion`: 100% static accessible layout, no pinning, tabbed project navigation, zero blur, zero motion.
+
+---
+
+### Phase 4.2 Override — About Section: Cybernetic Telemetry & Glitch Viewfinder (`04-about-section.md`) — ✅ Done
+
+**Architecture & Rationale:**
+- **Asymmetric Cyber Grid (12-col):** Left column (5 cols) dedicated to the targeting viewfinder portrait; right column (7 cols) structured into a 3-tier telemetry deck. Both columns are locked with `items-stretch` and flex layouts ensuring **0px height divergence** on desktop (`heightDiff: 0px` verified via Puppeteer).
+- **Left Column: Viewfinder Glitch Portrait (`ScanFrame.tsx`):**
+  - Serves real photo `/assets/edward-portrait.jpg` (uploaded to `/public/assets/edward-portrait.jpg`) with duotone violet grading (`mix-blend-mode: multiply` + `screen`), CRT scanlines, and radial gradient ambient top lighting.
+  - Interactive CMYK channel-split twitch on hover and 4.5s periodic timer using `clip-path` horizontal slice offsets.
+  - Animated vertical cyan/accent laser sweep line.
+  - Targeting HUD brackets (`SYS.SCAN // 01`, `LAT: -6.2088`, `TARGET: EDWARD G. KRISTIAN`, `99.8% CALIBRATED`).
+  - Fallback avatar with monogram if image asset is unavailable.
+- **Right Column: 3-Tier Telemetry Deck (`About.tsx`, `IdentityCore.tsx`, `DisciplineCards.tsx`, `StatCounter.tsx`):**
+  - **Tier 1 — Identity Core HUD:** Circular radar badge (approx. 90px–110px diameter) with concentric dashed orbital ring (`animate-[spin_10s_linear_infinite]`, accelerates to `2.5s` on hover), sweeping radar cone, reticle crosshairs, pulsing live heartbeat indicator (`bg-channel-cyan animate-ping`), and bold `EGK` monogram. Positioned adjacent to the engineering lead statement.
+  - **Tier 2 — Dual Discipline Modules:** Two side-by-side cyber cards (`// 01 ARCHITECTURE` [Mobile & Web Craft] and `// 02 RIGOR` [Empirical Data Analysis]) with CMYK channel accents, tech stack pills (`SwiftUI`, `Concurrency`, `React`, `Systems` / `FastAPI`, `Pandas`, `SQL`, `Telemetry`), and momentary CMYK border glow on hover.
+  - **Tier 3 — Philosophy Chip & Metric Counter HUD:**
+    - Terminal quote chip: `> "Code with architectural intent. Data with empirical rigor."`
+    - 3-column metric row counting up via rAF cubic ease-out: `3+` Apps Shipped, `14+` Datasets Analyzed, `50k+` Data Points Processed.
+- **Responsive Adaptations:**
+  - Mobile / Tablet: Left portrait is centered and constrained (`max-w-[380px] sm:max-w-[440px] h-[460px] sm:h-[500px]`), maintaining ideal portrait proportions without excessive height before stacking the right-hand tiers.
+  - Desktop (1024px+ / 1440px): Full equal-height stretch (`722.91px` on desktop-lg).
+
+**Verification & Metrics:**
+- **Automated Geometry Verification (`scripts/verify-about.mjs`):**
+  - Left column: `top: 180.78px, bottom: 903.69px, height: 722.91px`
+  - Right column: `top: 180.78px, bottom: 903.69px, height: 722.91px`
+  - Divergence: `heightDiff: 0px`, `topDiff: 0px`, `bottomDiff: 0px`.
+- **Visual QA Capture:**
+  - `about-1440-normal.png` (Desktop 1440px neutral state)
+  - `about-1440-portrait-glitch.png` (Desktop 1440px hover state with CMYK glitch & accelerated laser)
+  - `about-1024.png` (Small desktop 1024px)
+  - `about-768.png` (Tablet 768px stacked)
+  - `about-375.png` (Mobile 375px stacked)
+- **Build Status:** Passes cleanly with `tsc -b && vite build` (125ms, zero errors).
+
 
 

@@ -2,45 +2,51 @@
 
 ## Goal
 
-Establish Edward as both a developer (craft/build) and a data analyst (rigor/insight)
-— the section should visually acknowledge this dual identity rather than reading as
-a generic "I'm a passionate developer" bio.
+Establish Edward's dual identity as an iOS/Web developer and data analyst. The layout must feel like an advanced cybernetic diagnostics dashboard: a holographic glitch portrait on the left, and an interactive telemetry overview with an embedded "EGK Core" HUD on the right.
 
-## Content
+## Layout & Architecture
 
-- Section header: `[01] About` (mono index + Space Grotesk heading, per header
-  convention used across sections).
-- Bio copy: `[PLACEHOLDER: 2–3 short paragraphs. Suggested structure —
-  paragraph 1: who he is / what he builds (iOS + web); paragraph 2: the data-analyst
-  side, how he thinks about problems; paragraph 3: what he's currently focused on
-  or looking for.]`
-- Optional pull-quote or highlighted line in larger type breaking up the paragraphs
-  — mono font, `--accent` color, e.g. a personal engineering philosophy one-liner.
-- **Stat/metric row** (mono numerals, large, with small labels underneath) — a
-  strong device for a data-analyst identity. Examples of the *kind* of stat
-  (Edward should supply real numbers): `[PLACEHOLDER: e.g. "3+ yrs experience",
-  "12 shipped apps", "40+ datasets analyzed"]`. Animate these counting up from 0
-  when the section scrolls into view (see motion spec).
+Two-column asymmetric cyber grid (`grid-cols-12 gap-8 items-stretch`):
 
-## Layout
+### Left Column (5 Cols) — Viewfinder Glitch Portrait
+- **Image Source:** `/public/assets/edward-portrait.jpg` (with elegant fallback if not yet uploaded).
+- **Styling & Cybernetic Treatments:**
+  - Duotone violet color grade: shadows to `--bg-void`, highlights to `--text-primary`, midtones to `--violet-bright`.
+  - Corner-bracket target HUD (`┌ ┐ └ ┘`) with telemetry readouts (`SYS.SCAN // 01`, `LAT: -6.2088`, `CALIBRATED 99.8%`).
+  - Subtle animated scanline overlay (`repeating-linear-gradient`).
+- **Interactive Glitch:**
+  - On hover or periodic interval: CMYK RGB channel-split twitch (`clip-path` horizontal slice offset) + vertical laser sweep animation.
 
-- Two-column desktop layout: left column = photo or abstract avatar treatment
-  (see below), right column = bio text + stat row. Reverse or stack on mobile.
-- **Photo treatment (if using a real photo):** avoid a plain rounded headshot.
-  Apply a duotone/violet treatment matching the palette (CSS `filter` or
-  pre-processed image: map shadows to `--bg-void`, highlights to `--text-primary`,
-  with a violet mid-tone), inside a hairline-bordered frame with a corner-bracket
-  motif (like a viewfinder/scan-target — ties into the "data analysis" concept).
-  On hover/scroll-in, run a brief horizontal-scan-line animation across it once.
-- **If no photo is provided:** use a generative avatar alternative — e.g. an
-  abstract geometric portrait-shaped silhouette filled with the node-graph motif
-  from the hero, or a large stylized monogram in the corner-bracket frame.
-- Background: `--bg-panel` for this section (alternate from hero's `--bg-void`)
-  to create rhythm as user scrolls.
+### Right Column (7 Cols) — "Identity Core" & Dual Telemetry Deck
 
-## Micro-interactions
+Instead of a plain block of paragraphs, structure the right column into three distinct visual tiers:
 
-- Stat numbers: count-up animation on scroll-into-view, `--accent` color while
-  counting, settles to `--text-primary` at rest.
-- Corner-bracket frame around photo/avatar: brackets animate inward from slightly
-  outside their resting position on scroll-in (150ms stagger per corner).
+#### Tier 1: Identity Core & Lead Header (Flex Row)
+- **Embedded EGK Core:** Re-purpose the circular EGK radar badge into an active system status node (approx. 90px–110px diameter) placed adjacent to the header copy.
+  - Rotating concentric ring with subtle pulse animation.
+  - Telemetry ping dot synced with live system heartbeat.
+- **Lead Statement:**
+  "iOS & Full-Stack Engineer bridging tactile native interfaces with telemetry-driven web architectures."
+
+#### Tier 2: Dual Discipline Modules (2-Column Sub-Grid)
+Two interactive cyber cards with hairline borders (`--bg-panel-raised`):
+- **Deck `// 01 ARCHITECTURE` (Mobile & Web Craft):**
+  - High-performance Swift concurrency, SwiftUI component trees, and reactive web applications.
+  - Focus on native ergonomics, sub-frame response, and modular systems.
+- **Deck `// 02 RIGOR` (Empirical Data Analysis):**
+  - Telemetry-backed engineering, large-scale dataset pipelines, and algorithmic optimization.
+  - Eliminating guesswork through predictive analytics and quantitative validation.
+
+#### Tier 3: Philosophy Chip & Live Metrics
+- **Philosophy Chip:** Monospace terminal quote in `--accent`:
+  `"Code with architectural intent. Data with empirical rigor."`
+- **Metric HUD Row:**
+  - `3+` Apps Shipped
+  - `14+` Datasets Analyzed
+  - `50k+` Data Points Processed
+  - Large mono numerals with smooth count-up scroll-trigger animation.
+
+## Micro-Interactions
+- Hovering the EGK Core speeds up its orbital ring rotation.
+- Hovering either discipline deck triggers a momentary CMYK border flicker.
+- Metric counter scrolls up from 0 when entering viewport.
