@@ -1,0 +1,70 @@
+/*
+ * Design Tokens — from 01-design-system.md
+ *
+ * These are the single source of truth for the portfolio's visual language.
+ * Every color, spacing, and typography value used in the site should
+ * reference these tokens. The CMYK channel colors are ONLY for the
+ * chromatic-split glitch effect — never as flat fills.
+ */
+
+:root {
+  /* ── Base backgrounds ─────────────────────────────────── */
+  --bg-void: #0A0612;
+  --bg-panel: #130B22;
+  --bg-panel-raised: #1C1130;
+  --border-hairline: #2A1B45;
+
+  /* ── Violet core ──────────────────────────────────────── */
+  --violet-deep: #2E1065;
+  --violet-mid: #4C1D95;
+  --violet-bright: #7C3AED;
+
+  /* ── CMYK glitch channels (glitch effect ONLY) ─────── */
+  --channel-cyan: #00F0FF;
+  --channel-magenta: #FF2E9A;
+  --channel-yellow: #FFE600;
+
+  /* ── Text ──────────────────────────────────────────────── */
+  --text-primary: #F4F1FA;
+  --text-secondary: #B3A3D6;
+  --text-tertiary: #6B5B8A;
+
+  /* ── Accent ────────────────────────────────────────────── */
+  --accent: #FF2E9A;
+
+  /* ── Spacing (8px base unit) ───────────────────────────── */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-12: 96px;
+  --space-16: 128px;
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --content-max-width: 1200px;
+  --gutter-mobile: 24px;
+  --gutter-desktop: 64px;
+  --section-padding-desktop: 160px;
+  --section-padding-mobile: 96px;
+
+  /* ── Radii ─────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-card: 12px;
+
+  /* ── Header ────────────────────────────────────────────── */
+  --header-height: 72px;
+  --header-height-mobile: 56px;
+
+  /* ── Animation ─────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Hero glow (the only allowed shadow in the system) ── */
+  --hero-glow: 0 0 60px rgba(124, 58, 237, 0.15);
+
+  /* ── Typography (fluid values set via utility classes) ── */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+}

@@ -1,0 +1,266 @@
+/* ── Tailwind v4 ─────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ── Design system layers ────────────────────────────────── */
+@import "./styles/fonts.css";
+@import "./styles/tokens.css";
+
+/*
+ * Tailwind v4 theme configuration
+ * Maps design tokens to Tailwind's theme system so we can use
+ * utility classes like `bg-void`, `text-primary`, `font-display`, etc.
+ */
+@theme {
+  /* ── Colors ─────────────────────────────────────────── */
+  --color-void: #0A0612;
+  --color-panel: #130B22;
+  --color-panel-raised: #1C1130;
+  --color-border-hairline: #2A1B45;
+
+  --color-violet-deep: #2E1065;
+  --color-violet-mid: #4C1D95;
+  --color-violet-bright: #7C3AED;
+
+  --color-channel-cyan: #00F0FF;
+  --color-channel-magenta: #FF2E9A;
+  --color-channel-yellow: #FFE600;
+
+  --color-text-primary: #F4F1FA;
+  --color-text-secondary: #B3A3D6;
+  --color-text-tertiary: #6B5B8A;
+
+  --color-accent: #FF2E9A;
+
+  /* ── Fonts ──────────────────────────────────────────── */
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', 'Fira Code', monospace;
+
+  /* ── Border radius ─────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-card: 12px;
+
+  /* ── Breakpoints (from 09-technical-architecture.md) ── */
+  --breakpoint-mobile-lg: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-desktop-lg: 1440px;
+
+  /* ── Easing ────────────────────────────────────────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Keyframes (defined globally so they exist at initial paint) ── */
+@keyframes glitch-cyan {
+  0% {
+    transform: translate(-5px, -3px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-magenta {
+  0% {
+    transform: translate(4px, 5px);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-jitter {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(1.5px, -1px); }
+  50%      { transform: translate(-1px, 1.5px); }
+  75%      { transform: translate(1px, 0.5px); }
+}
+
+@keyframes glitch-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Base Layer (properly scoped inside @layer base) ────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--bg-void);
+    overflow-x: hidden;
+  }
+
+  @media (max-width: 767px) {
+    body {
+      font-size: 16px;
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--violet-mid);
+    color: var(--text-primary);
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--bg-void);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-hairline);
+    border-radius: var(--radius-sm);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--violet-mid);
+  }
+}
+
+/* ── Typography & Section utility classes ─────────────────── */
+@layer utilities {
+  .text-hero-h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 88px;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+  }
+
+  .text-section-h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .text-card-h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .text-body {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.6;
+    letter-spacing: 0;
+  }
+
+  .text-small-meta {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  .text-nav-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1023px) {
+    .text-hero-h1 {
+      font-size: clamp(40px, 8vw, 68px);
+      line-height: 1.02;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .text-hero-h1 {
+      font-size: clamp(32px, 9vw, 44px);
+      line-height: 1.05;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    .text-section-h2 {
+      font-size: 32px;
+      line-height: 1.15;
+    }
+
+    .text-card-h3 {
+      font-size: 19px;
+    }
+
+    .text-body {
+      font-size: 16px;
+    }
+
+    .text-small-meta {
+      font-size: 12px;
+    }
+  }
+
+  /* ── Section layout helper ───────────────────────────────── */
+  .section-container {
+    max-width: var(--content-max-width, 1200px);
+    margin-inline: auto;
+    padding-inline: var(--gutter-mobile, 24px);
+    padding-block: var(--section-padding-mobile, 96px);
+  }
+
+  @media (min-width: 1024px) {
+    .section-container {
+      padding-inline: var(--gutter-desktop, 64px);
+      padding-block: var(--section-padding-desktop, 160px);
+    }
+  }
+
+  /* ── Background grid motif (procedural, low-opacity) ─────── */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, var(--violet-deep) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--violet-deep) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.05;
+  }
+}
