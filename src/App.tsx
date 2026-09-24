@@ -11,6 +11,7 @@
  * - Footer — minimal copyright + back-to-top trigger
  */
 
+import { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -19,10 +20,16 @@ import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import PrecisionCursor from './components/shared/PrecisionCursor';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
+  const [booted, setBooted] = useState(false);
+
   return (
     <div className="min-h-screen bg-void text-text-primary selection:bg-violet-mid selection:text-text-primary">
+      {/* ── Boot preloader (unmounts after completion) ──── */}
+      {!booted && <LoadingScreen onComplete={() => setBooted(true)} />}
+
       {/* ── Accessible skip link for keyboard users ── */}
       <a
         href="#about"

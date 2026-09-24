@@ -20,8 +20,8 @@ to re-explain anything.
 ## Current status
 
 **Project:** `edward-portfolio/` (Vite + React + TypeScript + Tailwind CSS v4)
-**Active phase:** Complete — All phases (1–6) built, verified, and audited (with 2.5D CSS Cyber Shelf Projects pivot)
-**Last updated:** 2026-09-08T15:45 — 2.5D CSS Cyber Shelf implemented, verified across breakpoints, and audited
+**Active phase:** Phase 7 — Loading Screen preloader (`14-loading-screen.md`)
+**Last updated:** 2026-09-11T21:45 — Industrial cyber terminal boot preloader implemented
 
 | Phase | Status | Notes |
 |---|---|---|
@@ -31,6 +31,7 @@ to re-explain anything.
 | 4 — Remaining sections (04–07) | ✅ Done | About, Projects (2.5D CSS Cyber Shelf), Skills (matrix), Contact (timezone/copy), Footer |
 | 5 — Motion + accessibility pass | ✅ Done | ui-ux-pro-max accessibility/QA cross-check, inView stagger, keyboard tabs, precision cursor |
 | 6 — Performance pass | ✅ Done | bundle budgets (76.99KB gzip JS, 10.05KB gzip CSS), Three.js lazy-loaded, zero TS errors |
+| 7 — Loading Screen (`14-loading-screen.md`) | ✅ Done | Industrial cyber terminal boot preloader, CMYK glitch counter, shutter-wipe exit, boot-complete event |
 
 **Legend:** ⏳ not started · 🔧 in progress · ✅ done · ⚠️ done with open questions · ❌ blocked
 
@@ -531,3 +532,51 @@ building, no need to re-decide.
   - `cybershelf-1440-card3-lilzbake.png`: Crisp predictive bakery analytics dashboard inside yellow chassis.
   - `cybershelf-1024.png`, `cybershelf-768.png`, `cybershelf-375.png`, `cybershelf-reduced-motion.png`: All responsive breakpoints and accessibility modes verified.
 - **Git Status:** Pending user confirmation before commit/push per explicit instructions.
+
+---
+
+### Phase 7 — Loading Screen Preloader (`14-loading-screen.md`) — ✅ Done
+
+**Architecture & Implementation (`src/components/LoadingScreen.tsx`):**
+- **Full-screen fixed overlay** (`fixed inset-0 z-[9999]`) with `--bg-void` (`#0A0612`) background.
+- **Scanline + grid texture:** Ultra-subtle 2 px pitch repeating scanlines at 4 % opacity, layered with a 60 px × 60 px graph grid at 4 % opacity.
+- **Non-linear 0→100% counter:**
+  - 3-phase progress curve over ~1.4 s:
+    - Phase 1 (0–40 % time): Fast ramp 0→68 % (linear burst).
+    - Phase 2 (40–80 % time): Stall 68→84 % (`easeInOutSine`, simulates shader compilation).
+    - Phase 3 (80–100 % time): Snap 84→100 % (`easeOutExpo`).
+  - Typography: `JetBrains Mono`, 500 weight, `text-2xl sm:text-4xl`, tracking tight.
+- **CMYK chromatic-aberration glitch:**
+  - Two ghost layers (cyan `#00F0FF` and magenta `#FF2E9A`) offset horizontally by 1–3 px in erratic jitter pattern.
+  - Jitter intensifies during stall band (68–84 %), uses `mix-blend-mode: screen` with 60 % opacity.
+  - Snaps to solid `--text-primary` at exactly 100 %.
+- **Horizontal progress gauge:**
+  - 2 px height bar beneath the counter numerals.
+  - Track: `--border-hairline` (`#2A1B45`). Fill: linear gradient `--violet-mid` → `--violet-bright`.
+- **Peripheral HUD elements:**
+  - Top-center: SVG crosshair/targeting node icon in `--text-tertiary`.
+  - Bottom-left: `SYS.INIT // EGK_KERNEL_V1.4`.
+  - Bottom-center (desktop): Micro abstract glyphs (`✦ ⬡ ⨁ ⏣`).
+  - Bottom-right: `TICKS: 60FPS // 127.0.0.1`.
+
+**Exit & Reveal Choreography:**
+- **Hold frame (120 ms):** Text snaps to `100% // READY` in solid `--text-primary`.
+- **Shutter-wipe (400 ms):** Top half slides `translateY(-100%)`, bottom half slides `translateY(+100%)`, main overlay fades `opacity: 0` with `brightness(1.5)` boost.
+- **Hero handoff:**
+  - `document.body.style.overflow` restored to `''`.
+  - Custom `boot-complete` event dispatched to trigger hero headline glitch.
+  - Component fully unmounted from DOM via parent `onComplete` callback.
+
+**Fallback & Accessibility:**
+- **Hard-cap timeout:** 2.0 s max — counter force-jumps to 100 % and dismisses.
+- **`prefers-reduced-motion`:** CMYK jitter disabled, shutter-wipe replaced by simple opacity fade.
+- **Scroll lock:** `body.overflow: hidden` during preloader, restored on exit.
+- **ARIA:** `role="status"`, `aria-live="polite"`, `aria-label` with live percentage.
+
+**Integration (`src/App.tsx`):**
+- `LoadingScreen` renders conditionally via `!booted` state, receiving `onComplete` callback.
+- After `onComplete` fires, component is removed from the React tree (zero DOM residue).
+
+**Verification & Metrics:**
+- **Build Status:** `tsc -b && vite build` succeeded in 146 ms with 0 TS errors (52 modules).
+- **Bundle impact:** Main JS chunk grew by ~5 KB gzip (80.43 KB vs 79.14 KB previous), well within budget.
